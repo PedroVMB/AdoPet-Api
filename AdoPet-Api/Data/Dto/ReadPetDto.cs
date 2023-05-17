@@ -1,14 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using AdoPet_Api.Model;
+using System.ComponentModel.DataAnnotations;
 
-namespace AdoPet_Api.Model
+namespace AdoPet_Api.Data.Dto
 {
-    public class PetModel
+    public class ReadPetDto
     {
         [Key]
         [Required]
         public int Id { get; set; }
-        public int ShelterId { get; set; }
-        public virtual ShelterModel Shelter { get; set; }
 
         [Required(ErrorMessage = "Nome é necessário")]
         public string Nome { get; set; }
@@ -27,5 +26,7 @@ namespace AdoPet_Api.Model
 
         [Required(ErrorMessage = "A foto é necessária")]
         public string Imagem { get; set; }
+
+        public ICollection<ReadShelterDto> Shelters { get; set; }
     }
 }
