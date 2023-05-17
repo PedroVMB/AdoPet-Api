@@ -12,5 +12,6 @@ namespace AdoPet_Api.Data
 
 
         public DbSet<TutorModel> Tutores { get; set; }
+        public DbSet<ShelterModel> Shelters { get; set; }
     }
 }
