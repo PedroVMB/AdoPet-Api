@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using AdoPet_Api.Enuns;
+using System.ComponentModel.DataAnnotations;
 
 namespace AdoPet_Api.Model
 {
@@ -23,7 +24,7 @@ namespace AdoPet_Api.Model
         public int Idade { get; set; }
 
         [Required]
-        public Enum Enereco { get; set; }
+        public Enuns.Enum Endereco { get; set; }
 
         [Required(ErrorMessage = "A foto é necessária")]
         public string Imagem { get; set; }
