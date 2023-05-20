@@ -7,14 +7,13 @@ using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//Db Connection
+// Configuração da conexão com o banco de dados
 var connectionString = builder.Configuration.GetConnectionString("AdoPetConnection");
 builder.Services.AddDbContext<AdoPetContext>(opts => opts.UseLazyLoadingProxies().UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
-// Add services to the container.
+// Adiciona serviços ao contêiner de injeção de dependência
 
-
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+// Configuração do Swagger/OpenAPI
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -23,13 +22,20 @@ builder.Services.AddSwaggerGen(c =>
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
 });
 
+// Registro dos serviços no contêiner de injeção de dependência
 builder.Services.AddScoped<IPetRepository, PetService>();
 builder.Services.AddScoped<IShelterRepository, ShelterService>();
 builder.Services.AddScoped<ITutorRepository, TutorService>();
 
+// Adiciona o serviço de autorização
+builder.Services.AddAuthorization();
+
+// Adiciona o serviço de controleadores
+builder.Services.AddControllers();
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Configuração do pipeline de requisição HTTP
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

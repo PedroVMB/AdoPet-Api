@@ -8,12 +8,12 @@ namespace AdoPet_Api.Model
         [Key]
         [Required]
         public int Id { get; set; }
-        [Required(ErrorMessage = "O nome é obrigatório")]
-        public string Nome { get; set; }
-        [Required(ErrorMessage = "A cidade é obrigatória")]
-        public string Cidade { get; set; }
 
-        [Required(ErrorMessage = "O Estado é obrigatório")]
+        [Required]
+        public string Nome { get; set; }
+        [Required]
+        public string Cidade { get; set; }
+        [Required]
         public string Estado { get; set; }
     }
 }

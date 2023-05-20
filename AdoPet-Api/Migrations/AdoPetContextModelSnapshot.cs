@@ -56,7 +56,7 @@ namespace AdoPet_Api.Migrations
 
                     b.HasIndex("ShelterId");
 
-                    b.ToTable("Pets", (string)null);
+                    b.ToTable("Pets");
                 });
 
             modelBuilder.Entity("AdoPet_Api.Model.Shelter", b =>
@@ -79,7 +79,7 @@ namespace AdoPet_Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Shelters", (string)null);
+                    b.ToTable("Shelters");
                 });
 
             modelBuilder.Entity("AdoPet_Api.Model.Tutor", b =>
@@ -106,7 +106,7 @@ namespace AdoPet_Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tutores", (string)null);
+                    b.ToTable("Tutores");
                 });
 
             modelBuilder.Entity("AdoPet_Api.Model.Pet", b =>

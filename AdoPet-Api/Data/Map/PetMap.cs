@@ -15,6 +15,7 @@ namespace AdoPet_Api.Data.Map
             builder.Property(x => x.Idade).IsRequired();
             builder.Property(x => x.Endereco).IsRequired();
             builder.Property(x => x.Imagem).IsRequired();
+            builder.Property(x => x.ShelterId);
 
             builder.HasOne(x => x.Shelter);
         }

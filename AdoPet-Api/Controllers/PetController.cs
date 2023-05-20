@@ -1,4 +1,5 @@
 ﻿using AdoPet_Api.Model;
+using AdoPet_Api.Repositories;
 using AdoPet_Api.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,28 +9,28 @@ namespace AdoPet_Api.Controllers
     [ApiController]
     public class PetController : ControllerBase
     {
-        private readonly PetService _service;
-        public PetController(PetService petService)
+        private readonly IPetRepository _petRepository;
+        public PetController(IPetRepository petRepository)
         {
-            _service = petService;
+            _petRepository = petRepository;
         }
 
         [HttpGet]
         public async Task<ActionResult<List<Pet>>> GetPets()
         {
-            List<Pet> Pet = await _service.GetPets();
+            List<Pet> Pet = await _petRepository.GetPets();
             return Ok(Pet);
         }
         [HttpGet("{id}")]
         public async Task<ActionResult<List<Pet>>> GetPetById(int id)
         {
-            Pet Pet = await _service.GetPetById(id);
+            Pet Pet = await _petRepository.GetPetById(id);
             return Ok(Pet);
         }
         [HttpPost]
         public async Task<ActionResult<Pet>> Cadastrar([FromBody] Pet PetModel)
         {
-            Pet Pet = await _service.CreatePet(PetModel);
+            Pet Pet = await _petRepository.CreatePet(PetModel);
 
             return Ok(Pet);
         }
@@ -37,14 +38,14 @@ namespace AdoPet_Api.Controllers
         public async Task<ActionResult<Pet>> Atualizar([FromBody] Pet PetModel, int id)
         {
             PetModel.Id = id;
-            Pet Pet = await _service.UpdatePet(PetModel, id);
+            Pet Pet = await _petRepository.UpdatePet(PetModel, id);
 
             return Ok(Pet);
         }
         [HttpDelete("{id}")]
         public async Task<ActionResult<Pet>> Apagar(int id)
         {
-            bool apagado = await _service.DeletePet(id);
+            bool apagado = await _petRepository.DeletePet(id);
             return Ok(apagado);
         }
     }

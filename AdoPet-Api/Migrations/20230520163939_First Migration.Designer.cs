@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AdoPet_Api.Migrations
 {
     [DbContext(typeof(AdoPetContext))]
-    [Migration("20230520150645_Full project")]
-    partial class Fullproject
+    [Migration("20230520163939_First Migration")]
+    partial class FirstMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
