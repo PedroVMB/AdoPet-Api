@@ -9,16 +9,15 @@ namespace AdoPet_Api.Data.Map
         public void Configure(EntityTypeBuilder<Pet> builder)
         {
             builder.HasKey(x => x.Id);
-            builder.HasKey(x => x.Nome);
-            builder.HasKey(x => x.Descricao);
-            builder.HasKey(x => x.Adotado);
-            builder.HasKey(x => x.Idade);
-            builder.HasKey(x => x.Endereco);
-            builder.HasKey(X => X.Imagem);
-            builder.HasKey(x => x.ShelterId);
-
+            builder.Property(x => x.Nome).IsRequired();
+            builder.Property(x => x.Descricao).IsRequired();
+            builder.Property(x => x.Adotado).IsRequired();
+            builder.Property(x => x.Idade).IsRequired();
+            builder.Property(x => x.Endereco).IsRequired();
+            builder.Property(x => x.Imagem).IsRequired();
 
             builder.HasOne(x => x.Shelter);
         }
     }
+
 }
