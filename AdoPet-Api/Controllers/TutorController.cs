@@ -1,92 +1,50 @@
-﻿using AdoPet_Api.Data;
-using AdoPet_Api.Data.Dto;
-using AdoPet_Api.Model;
-using AutoMapper;
-using Microsoft.AspNetCore.JsonPatch;
+﻿using AdoPet_Api.Model;
+using AdoPet_Api.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace AdoPet_Api.Controllers
 {
-
-    [ApiController]
     [Route("[controller]")]
+    [ApiController]
     public class TutorController : ControllerBase
     {
-        private TutorContext _context;
-        private IMapper _mapper;
-
-        public TutorController(TutorContext context, IMapper mapper)
+        private readonly TutorService _service;
+        public TutorController(TutorService service)
         {
-            _context = context;
-            _mapper = mapper;
+            _service = service;
         }
-
-        [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        public async Task<IActionResult> CreateTutor([FromBody] CreateTutorDto tutorDto)
-        {
-            TutorModel tutor = _mapper.Map<TutorModel>(tutorDto);
-            await _context.Tutores.AddAsync(tutor);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetTutorId), new { id = tutor.Id }, tutor);
-        }
-
         [HttpGet]
-        public async Task<List<ReadTutorDto>> GetTutors()
+        public async Task<ActionResult<List<Tutor>>> GetTutors()
         {
-            var tutores = await _context.Tutores.ToListAsync();
-            var readTutorDtos = _mapper.Map<List<ReadTutorDto>>(tutores);
-
-            return readTutorDtos;
+            List<Tutor> tutors = await _service.GetTutors();
+            return Ok(tutors);
         }
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetTutorId(int id)
+        public async Task<ActionResult<List<Tutor>>> BuscarPorId(int id)
         {
-            var tutor = await _context.Tutores.FindAsync(id);
-            if (tutor == null) return NotFound();
-            var tutorDto = _mapper.Map<ReadTutorDto>(tutor);
-            return Ok(tutorDto);
+            Tutor tutor = await _service.GetTutorById(id);
+            return Ok(tutor);
         }
+        [HttpPost]
+        public async Task<ActionResult<Tutor>> Cadastrar([FromBody] Tutor tutorModel)
+        {
+            Tutor tutor= await _service.CreateTutor(tutorModel);
 
+            return Ok(tutor);
+        }
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateTutor(int id, [FromBody] UpdateTutorDto tutorDto)
+        public async Task<ActionResult<Tutor>> Atualizar([FromBody] Tutor tutorModel, int id)
         {
-            var tutor = await _context.Tutores.FindAsync(id);
-            if (tutor == null) return NotFound();
-            _mapper.Map(tutorDto, tutor);
-            await _context.SaveChangesAsync();
-            return NoContent();
+            tutorModel.Id = id;
+            Tutor tutor= await _service.UpdateTutor(tutorModel, id);
+
+            return Ok(tutor);
         }
-        [HttpPatch("{id}")]
-        public async Task<IActionResult> UpdateTutorPartial(int id, JsonPatchDocument<UpdateTutorDto> patch)
-        {
-            var tutor = await _context.Tutores.FindAsync(id);
-            if (tutor == null) return NotFound();
-
-            var tutorToUpdate =  _mapper.Map<UpdateTutorDto>(tutor);
-
-            patch.ApplyTo(tutorToUpdate, ModelState);
-
-            if (!TryValidateModel(tutorToUpdate))
-            {
-                return ValidationProblem(ModelState);
-            }
-
-            _mapper.Map(tutorToUpdate, tutor);
-            await _context.SaveChangesAsync();
-            return NoContent();
-        }
-
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTutor(int id)
+        public async Task<ActionResult<Tutor>> Apagar(int id)
         {
-            var tutor = await _context.Tutores.FindAsync(id);
-            if(tutor == null) return NotFound();
-            _context.Tutores.Remove(tutor);
-            await _context.SaveChangesAsync();
-            return NoContent();
+            bool apagado = await _service.DeleteTutor(id);
+            return Ok(apagado);
         }
 
     }

@@ -1,14 +1,14 @@
-﻿using AdoPet_Api.Model;
+﻿using AdoPet_Api.Enuns;
 using System.ComponentModel.DataAnnotations;
 
-namespace AdoPet_Api.Data.Dto
+namespace AdoPet_Api.Model
 {
-    public class ReadPetDto
+    public class Pet
     {
         [Key]
         [Required]
         public int Id { get; set; }
-
+        
         [Required(ErrorMessage = "Nome é necessário")]
         public string Nome { get; set; }
 
@@ -22,11 +22,12 @@ namespace AdoPet_Api.Data.Dto
         public int Idade { get; set; }
 
         [Required]
-        public Enum Enereco { get; set; }
+        public Enuns.Enum Endereco { get; set; }
 
         [Required(ErrorMessage = "A foto é necessária")]
         public string Imagem { get; set; }
 
-        public ICollection<ReadShelterDto> Shelters { get; set; }
+        public int? ShelterId { get; set; }
+        public virtual Shelter? Shelter { get; set; }
     }
 }

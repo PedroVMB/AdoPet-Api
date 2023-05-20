@@ -1,9 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AdoPet_Api.Data.Dto
+namespace AdoPet_Api.Model
 {
-    public class UpdateTutorDto
+    public class Tutor 
     {
+        [Key]
+        [Required]
+        public int Id { get; set; }
+
         [Required(ErrorMessage = "O nome é obrigatório")]
         public string Nome { get; set; }
 
@@ -15,5 +19,6 @@ namespace AdoPet_Api.Data.Dto
 
         [Required(ErrorMessage = "A descrição é obrigatória")]
         public string Descricao { get; set; }
+
     }
 }

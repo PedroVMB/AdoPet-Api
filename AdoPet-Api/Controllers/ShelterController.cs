@@ -1,92 +1,51 @@
-﻿using AdoPet_Api.Data.Dto;
-using AdoPet_Api.Data;
-using AdoPet_Api.Model;
-using AutoMapper;
-using Microsoft.AspNetCore.JsonPatch;
+﻿using AdoPet_Api.Model;
+using AdoPet_Api.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 
 namespace AdoPet_Api.Controllers
 {
-    [ApiController]
     [Route("[controller]")]
+    [ApiController]
     public class ShelterController : ControllerBase
     {
-        private TutorContext _context;
-        private IMapper _mapper;
-
-        public ShelterController(TutorContext context, IMapper mapper)
+        private readonly ShelterService _service;
+        public ShelterController(ShelterService service)
         {
-            _context = context;
-            _mapper = mapper;
+            _service = service;
         }
-
-        [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        public async Task<IActionResult> CreateShelter([FromBody] CreateShelterDto ShelterDto)
-        {
-            ShelterModel Shelter = _mapper.Map<ShelterModel>(ShelterDto);
-            await _context.Shelters.AddAsync(Shelter);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetShelterId), new { id = Shelter.Id }, Shelter);
-        }
-
         [HttpGet]
-        public async Task<List<ReadShelterDto>> GetShelters()
+        public async Task<ActionResult<List<Shelter>>> GetShelters()
         {
-            var Shelteres = await _context.Shelters.ToListAsync();
-            var readShelterDtos = _mapper.Map<List<ReadShelterDto>>(Shelteres);
-
-            return readShelterDtos;
+            List<Shelter> Shelters = await _service.GetShelters();
+            return Ok(Shelters);
         }
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetShelterId(int id)
+        public async Task<ActionResult<List<Shelter>>> BuscarPorId(int id)
         {
-            var Shelter = await _context.Shelters.FindAsync(id);
-            if (Shelter == null) return NotFound();
-            var ShelterDto = _mapper.Map<ReadShelterDto>(Shelter);
-            return Ok(ShelterDto);
+            Shelter Shelter = await _service.GetShelterById(id);
+            return Ok(Shelter);
         }
+        [HttpPost]
+        public async Task<ActionResult<Shelter>> Cadastrar([FromBody] Shelter ShelterModel)
+        {
+            Shelter Shelter = await _service.CreateShelter(ShelterModel);
 
+            return Ok(Shelter);
+        }
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateShelter(int id, [FromBody] UpdateShelterDto ShelterDto)
+        public async Task<ActionResult<Shelter>> Atualizar([FromBody] Shelter ShelterModel, int id)
         {
-            var Shelter = await _context.Shelters.FindAsync(id);
-            if (Shelter == null) return NotFound();
-            _mapper.Map(ShelterDto, Shelter);
-            await _context.SaveChangesAsync();
-            return NoContent();
+            ShelterModel.Id = id;
+            Shelter Shelter = await _service.UpdateShelter(ShelterModel, id);
+
+            return Ok(Shelter);
         }
-        [HttpPatch("{id}")]
-        public async Task<IActionResult> UpdateShelterPartial(int id, JsonPatchDocument<UpdateShelterDto> patch)
-        {
-            var Shelter = await _context.Shelters.FindAsync(id);
-            if (Shelter == null) return NotFound();
-
-            var ShelterToUpdate = _mapper.Map<UpdateShelterDto>(Shelter);
-
-            patch.ApplyTo(ShelterToUpdate, ModelState);
-
-            if (!TryValidateModel(ShelterToUpdate))
-            {
-                return ValidationProblem(ModelState);
-            }
-
-            _mapper.Map(ShelterToUpdate, Shelter);
-            await _context.SaveChangesAsync();
-            return NoContent();
-        }
-
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteShelter(int id)
+        public async Task<ActionResult<Shelter>> Apagar(int id)
         {
-            var Shelter = await _context.Shelters.FindAsync(id);
-            if (Shelter == null) return NotFound();
-            _context.Shelters.Remove(Shelter);
-            await _context.SaveChangesAsync();
-            return NoContent();
+            bool apagado = await _service.DeleteShelter(id);
+            return Ok(apagado);
         }
+
     }
 }

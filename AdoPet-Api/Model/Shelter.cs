@@ -1,9 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿
+using System.ComponentModel.DataAnnotations;
 
-namespace AdoPet_Api.Data.Dto
+namespace AdoPet_Api.Model
 {
-    public class CreateShelterDto
+    public class Shelter
     {
+        [Key]
+        [Required]
+        public int Id { get; set; }
         [Required(ErrorMessage = "O nome é obrigatório")]
         public string Nome { get; set; }
         [Required(ErrorMessage = "A cidade é obrigatória")]
