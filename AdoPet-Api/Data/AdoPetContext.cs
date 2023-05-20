@@ -19,6 +19,8 @@ namespace AdoPet_Api.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new PetMap());
+            modelBuilder.ApplyConfiguration(new TutorMap());
+            modelBuilder.ApplyConfiguration(new ShelterMap());
             base.OnModelCreating(modelBuilder);
         }
     }
