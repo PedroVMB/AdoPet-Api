@@ -3,6 +3,7 @@ using System;
 using AdoPet_Api.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AdoPet_Api.Migrations
 {
     [DbContext(typeof(AdoPetContext))]
-    partial class AdoPetContextModelSnapshot : ModelSnapshot
+    [Migration("20230520222732_Create Adoption method")]
+    partial class CreateAdoptionmethod
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

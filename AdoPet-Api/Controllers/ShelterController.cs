@@ -10,9 +10,11 @@ namespace AdoPet_Api.Controllers
     public class ShelterController : ControllerBase
     {
         private readonly IShelterRepository _shelterRepository;
-        public ShelterController(IShelterRepository shelterRepository)
+        private readonly IAdoptionRepository _adoptionRepository;
+        public ShelterController(IShelterRepository shelterRepository, IAdoptionRepository adoptionRepository)
         {
             _shelterRepository = shelterRepository;
+            _adoptionRepository = adoptionRepository;
         }
         [HttpGet]
         public async Task<ActionResult<List<Shelter>>> GetShelters()
@@ -46,6 +48,27 @@ namespace AdoPet_Api.Controllers
         {
             bool apagado = await _shelterRepository.DeleteShelter(id);
             return Ok(apagado);
+        }
+
+        [HttpDelete("cancelAdoption/{id}")]
+        public async Task<IActionResult> CancelAdoption(Guid id)
+        {
+            try
+            {
+                var result = await _adoptionRepository.CancelAdoption(id);
+                if (result)
+                {
+                    return Ok();
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
     }

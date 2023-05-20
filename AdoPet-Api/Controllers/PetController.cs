@@ -28,14 +28,14 @@ namespace AdoPet_Api.Controllers
             return Ok(Pet);
         }
         [HttpPost]
-        public async Task<ActionResult<Pet>> Cadastrar([FromBody] Pet PetModel)
+        public async Task<ActionResult<Pet>> CreatePet([FromBody] Pet PetModel)
         {
             Pet Pet = await _petRepository.CreatePet(PetModel);
 
             return Ok(Pet);
         }
         [HttpPut("{id}")]
-        public async Task<ActionResult<Pet>> Atualizar([FromBody] Pet PetModel, int id)
+        public async Task<ActionResult<Pet>> UpdatePet([FromBody] Pet PetModel, int id)
         {
             PetModel.Id = id;
             Pet Pet = await _petRepository.UpdatePet(PetModel, id);
@@ -43,7 +43,7 @@ namespace AdoPet_Api.Controllers
             return Ok(Pet);
         }
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Pet>> Apagar(int id)
+        public async Task<ActionResult<Pet>> DeletePet(int id)
         {
             bool apagado = await _petRepository.DeletePet(id);
             return Ok(apagado);
