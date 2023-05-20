@@ -26,6 +26,7 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddScoped<IPetRepository, PetService>();
 builder.Services.AddScoped<IShelterRepository, ShelterService>();
 builder.Services.AddScoped<ITutorRepository, TutorService>();
+builder.Services.AddScoped<IAdoptionRepository, AdoptionService>();
 
 // Adiciona o serviço de autorização
 builder.Services.AddAuthorization();
